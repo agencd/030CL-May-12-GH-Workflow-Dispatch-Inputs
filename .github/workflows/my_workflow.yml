@@ -16,6 +16,17 @@ on:
         required: true
         default: false
         type: boolean
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - test
+          - uat
+          - sandbox
+          - prod
 
 jobs:
   freds_first_job:
@@ -35,13 +46,20 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
+          
       - name: Terraform Init
         run: terraform init
+        
+      - name: Select Terraform Workspace
+        run: terraform workspace select ${{ inputs.environment }}
+
       - name: Terraform Plan
         run: terraform plan
+
       - name: Terraform apply
         if: ${{ inputs.run_apply }}
         run: terraform apply -auto-approve
+
       - name: Terraform destroy
         if: ${{ inputs.run_destroy }}
         run: terraform destroy -auto-approve

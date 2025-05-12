@@ -4,7 +4,7 @@ terraform {
     organization = "CL030-DevOps"
 
     workspaces {
-      name = "fred"
+      prefix = "network-"
     }
   }
 
@@ -23,16 +23,20 @@ provider "aws" {
 variable "prefix" {
   type        = string
   description = "Prefix for all resources"
-  default     = "May-9"
-
+  default     = "May-12"
+}
+variable "vpc_cidr_block" {
+  type        = string
+  description = "CIDR block for the VPC"
 }
 
 resource "aws_vpc" "main" {
-  cidr_block           = "10.0.0.0/16"
+  cidr_block           = var.vpc_cidr_block
   enable_dns_support   = true
   enable_dns_hostnames = true
   tags = {
     Name = "${var.prefix}-vpc"
+    Environment = terraform.workspace
   }
 }
 
