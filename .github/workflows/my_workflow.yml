@@ -11,6 +11,11 @@ on:
         required: true
         default: false
         type: boolean
+      run_destroy:
+        description: 'Run Terraform Destroy'
+        required: true
+        default: false
+        type: boolean
 
 jobs:
   freds_first_job:
@@ -37,5 +42,8 @@ jobs:
       - name: Terraform apply
         if: ${{ inputs.run_apply }}
         run: terraform apply -auto-approve
+      - name: Terraform destroy
+        if: ${{ inputs.run_destroy }}
+        run: terraform destroy -auto-approve
 
       
