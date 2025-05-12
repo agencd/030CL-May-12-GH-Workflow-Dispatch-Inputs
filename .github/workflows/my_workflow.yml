@@ -9,7 +9,7 @@ on:
       run_apply:
         description: 'Run Terraform Apply'
         required: true
-        default: 'false'
+        default: false
         type: boolean
 
 jobs:
@@ -35,7 +35,7 @@ jobs:
       - name: Terraform Plan
         run: terraform plan
       - name: Terraform apply
-        if: ${{ inputs.run_apply == 'true' }}
+        if: ${{ inputs.run_apply }}
         run: terraform apply -auto-approve
 
       
