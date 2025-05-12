@@ -52,11 +52,12 @@ jobs:
         run: terraform init
 
       - name: Terraform Plan
-        run: terraform plan
+        run: terraform plan -var-file ${{ inputs.environment }}.tfvars -out=tfplan
+        #run: terraform plan -var-file ${{ env.TF_WORKSPACE }}.tfvars
 
       - name: Terraform apply
         if: ${{ inputs.run_apply }}
-        run: terraform apply -auto-approve
+        run: terraform apply tfplan
 
       - name: Terraform destroy
         if: ${{ inputs.run_destroy }}
