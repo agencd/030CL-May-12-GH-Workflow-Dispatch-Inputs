@@ -61,6 +61,6 @@ jobs:
 
       - name: Terraform destroy
         if: ${{ inputs.run_destroy }}
-        run: terraform destroy -auto-approve
+        run: terraform destroy -auto-approve -var-file ${{ inputs.environment }}.tfvars
 
       
